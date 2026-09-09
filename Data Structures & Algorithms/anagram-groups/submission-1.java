@@ -1,29 +1,19 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        //Create a HashMap with key as string and value as list of string
-        Map<String, List<String>> resultMap = new HashMap<>();
-        
-        //go through the array, sort the anagrams and if they do not exist in the map then add them as key
-        //else add them to the corresponding existing list
-        for(String anagram : strs) {
-            String sortedString = sortString(anagram);
-            if(resultMap.containsKey(sortedString)) {
-                resultMap.get(sortedString).add(anagram);
-            }
-            else {
-                List<String> list = new ArrayList<>();
-                list.add(anagram);
-                resultMap.put(sortedString, list);
-            }
-        }
-        
-        //return the result
-        return new ArrayList<>(resultMap.values());
-    }
+        //Create a hashmap with key being int array converted to string with character frequencies 
+        //and value being a list of strings which are anagrams
+        Map<String, List<String>> map = new HashMap<>();
 
-    private String sortString(String string) {
-        char[] array = string.toCharArray();
-        Arrays.sort(array);
-        return new String(array);
+        for(String str : strs) {
+            int[] count = new int[26];
+            for(char c : str.toCharArray()) {
+                count[c - 'a']++;
+            }
+            String key = Arrays.toString(count);
+            map.putIfAbsent(key, new ArrayList<>());
+            map.get(key).add(str);
+        }
+
+        return new ArrayList<>(map.values());
     }
 }
