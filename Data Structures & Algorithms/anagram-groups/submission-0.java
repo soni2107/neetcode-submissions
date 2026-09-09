@@ -1,33 +1,27 @@
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        //Create a HashMap with key as string and value as list of string
-        Map<String, List<String>> resultMap = new HashMap<>();
-        
-        //go through the array, sort the anagrams and if they do not exist in the map then add them as key
-        //else add them to the corresponding existing list
-        for(String anagram : strs) {
-            String sortedString = sortString(anagram);
-            if(resultMap.containsKey(sortedString)) {
-                resultMap.get(sortedString).add(anagram);
+        //Create a hashmap with key being sorted string values from str and value being a list of unaltered strings which are anagrams
+        Map<String, List<String>> map = new HashMap<>();
+
+        //loop over the str values and check its existence in the map, if exists add the entry
+        for(String str : strs) {
+            //convert the str to char array and back to string
+            char[] arr = str.toCharArray();
+            Arrays.sort(arr);
+            String temp = new String(arr);
+            if(map.containsKey(temp)) {
+                map.get(temp).add(str);
             }
+            //else create a new entry
             else {
                 List<String> list = new ArrayList<>();
-                list.add(anagram);
-                resultMap.put(sortedString, list);
+                list.add(str);
+                map.put(temp, list);
             }
         }
         
-        //loop over the map and return the result
-        List<List<String>> resultList = new ArrayList<>();
-        for(String key : resultMap.keySet()) {
-            resultList.add(resultMap.get(key));
-        }
-        return resultList;
-    }
-
-    private String sortString(String string) {
-        char[] array = string.toCharArray();
-        Arrays.sort(array);
-        return new String(array);
+        
+        //return the collection of values from this map
+        return new ArrayList<>(map.values());
     }
 }
